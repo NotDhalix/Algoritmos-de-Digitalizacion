@@ -1,5 +1,8 @@
 import tkinter as tk
 import tkinter.font as tkfont
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
 
 def center_window(window):
     window.update_idletasks()
@@ -35,7 +38,13 @@ def close_window(window):
     window.withdraw()
     root.deiconify()  
 
-def algoritmo_DDA(x1, y1, x2, y2):
+def algoritmo_DDA():
+    
+    x1 = int(entry_x1.get())
+    y1 = int(entry_y1.get())
+    x2 = int(entry_x2.get())
+    y2 = int(entry_y2.get())
+    
     # Calcular deltas
     delta_x = x2 - x1
     delta_y = y2 - y1
@@ -71,10 +80,26 @@ def algoritmo_DDA(x1, y1, x2, y2):
         puntos_x.append(round(x1))
         puntos_y.append(round(y1))
 
-    return zip(puntos_x, puntos_y)
+    fig = plt.figure(figsize=(5, 5), dpi=100)
+    plt.plot(puntos_x, puntos_y)
+    plt.xlabel('X')
+    plt.ylabel('Y')
+    plt.grid(True)
+    plt.title('DDA Algorithm Graph')
+
+    canvas = FigureCanvasTkAgg(fig, master=DDAFrame)
+    canvas.get_tk_widget().grid(row=4, column=0, columnspan=4, pady=20)
+
+    
+    return list(zip(puntos_x, puntos_y))
 
 
 root = tk.Tk()
+
+titulos = tkfont.Font(family="Consolas", size=20, weight="bold")
+textos = tkfont.Font(family="Consolas", size=16)
+
+
 root.title("Algoritmos de trazado de Líneas")
 root.minsize(530,800)
 root.resizable(False, False)
@@ -86,7 +111,7 @@ FirstFrame.pack()
 FirstFrame.place(relx=0.5, rely=0.5, anchor="center")
 
 
-tk.Label(FirstFrame, text="Seleccione un algoritmo", font=tkfont.Font(family="Consolas", size=20, weight="bold"), background="#DEBFA9").place(relx=0.5, anchor="center", y=40)
+tk.Label(FirstFrame, text="Seleccione un algoritmo", font=titulos, background="#DEBFA9").place(relx=0.5, anchor="center", y=40)
 
 
 Botones = [
@@ -97,44 +122,47 @@ Botones = [
 ]
 
 for texto, redireccion, coordenada_y in Botones:
-    button = tk.Button(FirstFrame, text=texto, command=redireccion, font=tkfont.Font(family="Consolas", size=16), relief="flat", bg="#2E8F62", activebackground="#486148", activeforeground="#FFFFFF", cursor="hand2")
+    button = tk.Button(FirstFrame, text=texto, command=redireccion, font=textos, relief="flat", bg="#2E8F62", activebackground="#486148", activeforeground="#FFFFFF", cursor="hand2")
     button.place(relx=0.5, anchor="center", y=coordenada_y, width=340, height=60)
-
 
 
 VentanaDDA = tk.Toplevel(root)
 VentanaDDA.title("Algoritmo DDA")
-VentanaDDA.minsize(530,800)
+VentanaDDA.minsize(530, 800)
 VentanaDDA.resizable(False, False)
 VentanaDDA.config(background="#DEBFA9")
 VentanaDDA.withdraw()
 
-tk.Label(VentanaDDA, text="Ingrese los datos", font=tkfont.Font(family="Consolas", size=20, weight="bold"), background="#DEBFA9").grid(row=0, column=1, columnspan=4, pady=20)
+DDAFrame = tk.Frame(VentanaDDA, background="#DEBFA9")
+DDAFrame.pack()
+DDAFrame.place(relx=0.5, rely=0, anchor="n")
 
-tk.Label(VentanaDDA, text="x1:", font=tkfont.Font(family="Consolas", size=16), background="#DEBFA9").grid(row=1, column=1, pady=5)
-entry_x1 = tk.Entry(VentanaDDA, font=tkfont.Font(family="Consolas", size=16), width=10)
-entry_x1.grid(row=1, column=2, pady=5)
+tk.Label(DDAFrame, text="Ingrese los datos", font=titulos, background="#DEBFA9").grid(row=0, column=1, columnspan=2, pady=20)
+
+tk.Label(DDAFrame, text="x1:", font=textos, background="#DEBFA9").grid(row=1, column=0, pady=5)
+entry_x1 = tk.Entry(DDAFrame, font=textos, width=10)
+entry_x1.grid(row=1, column=1, pady=5)
+
+tk.Label(DDAFrame, text="y1:", font=textos, background="#DEBFA9").grid(row=1, column=2, pady=5)
+entry_y1 = tk.Entry(DDAFrame, font=textos, width=10)
+entry_y1.grid(row=1, column=3, pady=5)
+
+tk.Label(DDAFrame, text="x2:", font=textos, background="#DEBFA9").grid(row=2, column=0, pady=5)
+entry_x2 = tk.Entry(DDAFrame, font=textos, width=10)
+entry_x2.grid(row=2, column=1, pady=5)
+
+tk.Label(DDAFrame, text="y2:", font=textos, background="#DEBFA9").grid(row=2, column=2, pady=5)
+entry_y2 = tk.Entry(DDAFrame, font=textos, width=10)
+entry_y2.grid(row=2, column=3, pady=5)
+
+button = tk.Button(DDAFrame, text="Generar Línea", command=algoritmo_DDA, font=textos, relief="flat", bg="#2E8F62", activebackground="#486148", activeforeground="#FFFFFF", cursor="hand2")
+button.grid(row=3, column=0, columnspan=4, pady=20)
+button.place(relx=0.5, rely=1.0, anchor="s")
 
 
-tk.Label(VentanaDDA, text="y1:", font=tkfont.Font(family="Consolas", size=16), background="#DEBFA9").grid(row=1, column=3, pady=5)
-entry_y1 = tk.Entry(VentanaDDA, font=tkfont.Font(family="Consolas", size=16), width=10)
-entry_y1.grid(row=1, column=4, pady=5)
 
-
-tk.Label(VentanaDDA, text="x2:", font=tkfont.Font(family="Consolas", size=16), background="#DEBFA9").grid(row=2, column=1, pady=5)
-entry_x2 = tk.Entry(VentanaDDA, font=tkfont.Font(family="Consolas", size=16), width=10)
-entry_x2.grid(row=2, column=2, pady=5)
-
-
-tk.Label(VentanaDDA, text="y2:", font=tkfont.Font(family="Consolas", size=16), background="#DEBFA9").grid(row=2, column=3, pady=5)
-entry_y2 = tk.Entry(VentanaDDA, font=tkfont.Font(family="Consolas", size=16), width=10)
-entry_y2.grid(row=2, column=4, pady=5)
-
-
-for widget in VentanaDDA.winfo_children():
-    widget.grid_configure(padx=10, pady=5, sticky="ew")
-
-
+for widget in DDAFrame.winfo_children():
+    widget.grid_configure(padx=10, pady=5)
 
 
 VentanaBresenham = tk.Toplevel(root)
