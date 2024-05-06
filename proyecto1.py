@@ -36,6 +36,11 @@ def BotonAlgoritmoElipse():
     VentanaElipse.deiconify()
     center_window(VentanaElipse)   
 
+def BotonIntegrantes():
+    root.withdraw()
+    VentanaIntegrantes.deiconify()
+    center_window(VentanaIntegrantes)   
+
 def close_window(window):
     window.withdraw()
     root.deiconify()
@@ -312,7 +317,8 @@ Botones = [
     ("Algoritmo DDA", BotonAlgoritmoDDA, 130),
     ("Algoritmo Bresenham", BotonAlgoritmoBresenham, 200),
     ("Algoritmo Circunferencia", BotonAlgoritmoCircunferencia, 270),
-    ("Algoritmo Elipse", BotonAlgoritmoElipse, 340)
+    ("Algoritmo Elipse", BotonAlgoritmoElipse, 340),
+    ("Integrantes", BotonIntegrantes, 550)
 ]
 
 for texto, redireccion, coordenada_y in Botones:
@@ -472,7 +478,20 @@ button.place(relx=0.5, rely=1.0, anchor="s")
 for widget in ElipseFrame.winfo_children():
     widget.grid_configure(padx=10, pady=5)
 
-for window in [VentanaDDA, VentanaBresenham, VentanaCircunferencia, VentanaElipse]:
+VentanaIntegrantes = tk.Toplevel(root)
+VentanaIntegrantes.title("Integrantes")
+VentanaIntegrantes.minsize(530,800)
+VentanaIntegrantes.resizable(False, False)
+VentanaIntegrantes.config(background="#DEBFA9")
+VentanaIntegrantes.withdraw()
+tk.Label(VentanaIntegrantes, text="Integrantes", font=titulos, background="#DEBFA9").place(relx=0.5, anchor="center", y=40)
+tk.Label(VentanaIntegrantes, text="Gonzalez, Alejandro      E-8-182476", font=textos, background="#DEBFA9").place(relx=0.5, anchor="center", y=150)
+tk.Label(VentanaIntegrantes, text="Rodriguez, Alfonso       8-994-2393", font=textos, background="#DEBFA9").place(relx=0.5, anchor="center", y=200)
+tk.Label(VentanaIntegrantes, text="Rosales, Jordy           3-750-898", font=textos, background="#DEBFA9").place(relx=0.5, anchor="center", y=250)
+tk.Label(VentanaIntegrantes, text="Valdes, Nicole           9-987-2665", font=textos, background="#DEBFA9").place(relx=0.5, anchor="center", y=300)
+
+
+for window in [VentanaDDA, VentanaBresenham, VentanaCircunferencia, VentanaElipse, VentanaIntegrantes]:
     window.protocol("WM_DELETE_WINDOW", lambda window=window: close_window(window))
 
 root.protocol("WM_DELETE_WINDOW", cerrar_app)
